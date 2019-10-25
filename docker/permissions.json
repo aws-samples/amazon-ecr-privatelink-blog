@@ -1,0 +1,17 @@
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "new statement",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::818742524301:root"
+      },
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+      ]
+    }
+  ]
+}

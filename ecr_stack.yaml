@@ -1,0 +1,44 @@
+Description:
+  This template deploys a Amazon ECR repository with service account permissions
+
+Parameters:
+
+  ServiceAccount:
+    Description: Please enter the service account id (numbers only) for deployment
+    Type: String
+    MinLength: 12
+    MaxLength: 12
+
+  RepositoryName:
+    Description: Amazon ECR repository name
+    Type: String
+
+Resources:
+  ECRRepository: 
+    Type: AWS::ECR::Repository
+    Properties: 
+      RepositoryName: !Sub ${RepositoryName}
+      RepositoryPolicyText: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Sid: AllowPushPull
+            Effect: Allow
+            Principal: 
+              AWS: 
+                - !Sub "arn:aws:iam::${ServiceAccount}:root"
+            Action: 
+              - "ecr:GetDownloadUrlForLayer"
+              - "ecr:BatchGetImage"
+              - "ecr:BatchCheckLayerAvailability"
+              - "ecr:PutImage"
+              - "ecr:InitiateLayerUpload"
+              - "ecr:UploadLayerPart"
+              - "ecr:CompleteLayerUpload"
+              - "ecr:ListImages"
+
+
+Outputs:
+  RepositoryURL:
+    Description: A reference to the repository URL
+    Value: !GetAtt ECRRepository.Arn
